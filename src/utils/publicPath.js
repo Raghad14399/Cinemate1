@@ -3,8 +3,12 @@
  * This handles the base path differences between local development and GitHub Pages
  */
 
-// This gets the PUBLIC_URL from the environment (set by Create React App)
-const PUBLIC_PATH = process.env.PUBLIC_URL || '';
+// Determine if we're running in development or production
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+// In development, we don't need the PUBLIC_URL prefix
+// In production, we use the PUBLIC_URL from the environment (set by Create React App)
+const PUBLIC_PATH = isDevelopment ? '' : (process.env.PUBLIC_URL || '');
 
 /**
  * Get the correct path for public assets (like images)
@@ -14,5 +18,8 @@ const PUBLIC_PATH = process.env.PUBLIC_URL || '';
 export function getPublicPath(path) {
   // Make sure the path starts with a slash
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  
+  // In development, we just use the path directly
+  // In production, we prepend the PUBLIC_URL
   return `${PUBLIC_PATH}${normalizedPath}`;
 }
